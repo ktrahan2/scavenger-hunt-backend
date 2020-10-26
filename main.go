@@ -25,6 +25,7 @@ func init() {
 
 func main() {
 	connectToDatabase()
+
 	handleRequest()
 }
 
@@ -48,6 +49,9 @@ func connectToDatabase() {
 	fmt.Println("Successfully connected!")
 
 	db.AutoMigrate(&models.User{})
+
+	user := models.User{Username: "ktrain", Password: "123"}
+	db.Create(&user)
 
 	defer db.Close()
 }
