@@ -10,6 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
+	"github.com/ktrahan2/scavenger-hunt-backend/models"
 )
 
 var db *gorm.DB
@@ -43,8 +44,12 @@ func connectToDatabase() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+
 	fmt.Println("Successfully connected!")
+
+	db.AutoMigrate(&models.User{})
+
+	defer db.Close()
 }
 
 func handleRequest() {
@@ -53,13 +58,14 @@ func handleRequest() {
 	http.ListenAndServe(":7000", router)
 }
 
+//route methods
+func getUsers(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	log.Println("hey")
+}
+
 func setupResponse(w *http.ResponseWriter, r *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-}
-
-func getUsers(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
-	log.Println("hey")
 }
