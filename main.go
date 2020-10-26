@@ -17,6 +17,14 @@ var db *gorm.DB
 
 var err error
 
+type User struct {
+	gorm.Model
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+	Age      int    `json:"age"`
+}
+
 func init() {
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
@@ -25,7 +33,6 @@ func init() {
 
 func main() {
 	connectToDatabase()
-
 	handleRequest()
 }
 
@@ -50,8 +57,8 @@ func connectToDatabase() {
 
 	db.AutoMigrate(&models.User{})
 
-	user := models.User{Username: "ktrain", Password: "123"}
-	db.Create(&user)
+	// user := models.User{Username: "ktrain", Password: "123"}
+	// db.Create(&user)
 
 	defer db.Close()
 }
