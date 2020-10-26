@@ -17,14 +17,6 @@ var db *gorm.DB
 
 var err error
 
-type User struct {
-	gorm.Model
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
-	Age      int    `json:"age"`
-}
-
 func init() {
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
