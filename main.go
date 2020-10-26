@@ -10,7 +10,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
-	"github.com/ktrahan2/scavenger-hunt-backend/models"
 )
 
 var db *gorm.DB
@@ -47,7 +46,7 @@ func connectToDatabase() {
 
 	fmt.Println("Successfully connected!")
 
-	db.AutoMigrate(&models.User{})
+	// db.AutoMigrate(&models.User{})
 
 	// user := models.User{Username: "ktrain", Password: "123"}
 	// db.Create(&user)
