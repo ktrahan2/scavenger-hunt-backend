@@ -34,11 +34,11 @@ func connectToDatabase() {
 	databaseUsername := os.Getenv("USERNAME")
 	password := os.Getenv("PASSWORD")
 	database := os.Getenv("DATABASE")
-	port := os.Getenv("PORT")
+	dbport := os.Getenv("DBPORT")
 
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		host, port, databaseUsername, password, database)
+		host, dbport, databaseUsername, password, database)
 
 	db, err = gorm.Open("postgres", psqlInfo)
 	if err != nil {
@@ -58,7 +58,11 @@ func connectToDatabase() {
 func handleRequest() {
 	router := mux.NewRouter()
 	router.HandleFunc("/users", getUsers).Methods("GET")
-	http.ListenAndServe(":7000", router)
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+	http.ListenAndServe(":"+port, router)
 }
 
 //route methods
