@@ -1,1 +1,1 @@
-web: bin/scavenger-hunt-backend
+web: go run main.go
