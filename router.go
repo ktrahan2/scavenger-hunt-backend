@@ -14,5 +14,6 @@ func handleRequest() {
 	router.HandleFunc("/user/{id}", getUser).Methods("GET")
 	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
 	router.HandleFunc("/update-user/{id}", UpdateUser).Methods("PUT")
+	router.HandleFunc("/login", login).Methods("POST")
 	http.ListenAndServe(":7000", router)
 }
