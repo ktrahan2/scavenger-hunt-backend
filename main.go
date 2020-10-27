@@ -1,17 +1,14 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
-	"github.com/ktrahan2/scavenger-hunt-backend/v2/models"
+	// "github.com/ktrahan2/scavenger-hunt-backend/v2/models"
 )
 
 var db *gorm.DB
@@ -25,59 +22,40 @@ func init() {
 }
 
 func main() {
-	connectToDatabase()
+	InitialMigration()
 	handleRequest()
 	defer db.Close()
 }
 
-func connectToDatabase() {
+// func connectToDatabase() {
 
-	host := os.Getenv("DBHOST")
-	databaseUsername := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
-	database := os.Getenv("DATABASE")
-	dbport := os.Getenv("DBPORT")
+// 	host := os.Getenv("DBHOST")
+// 	databaseUsername := os.Getenv("USERNAME")
+// 	password := os.Getenv("PASSWORD")
+// 	database := os.Getenv("DATABASE")
+// 	dbport := os.Getenv("DBPORT")
 
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, dbport, databaseUsername, password, database)
+// 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+// 		"password=%s dbname=%s sslmode=disable",
+// 		host, dbport, databaseUsername, password, database)
 
-	db, err = gorm.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
+// 	db, err = gorm.Open("postgres", psqlInfo)
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	fmt.Println("Successfully connected!")
+// 	fmt.Println("Successfully connected!")
 
-	db.AutoMigrate(&models.User{})
+// 	user := models.User{Username: "ktrain", Password: "123", Email: "ktrain@yahoo.com"}
+// 	db.Create(&user)
 
-	user := models.User{Username: "ktrain", Password: "123", Email: "ktrain@yahoo.com"}
-	db.Create(&user)
-
-}
+// }
 
 func handleRequest() {
 	router := mux.NewRouter()
 	router.HandleFunc("/users", getUsers).Methods("GET")
-	router.HandleFunc("/users", postUsers).Methods("POST")
 	http.ListenAndServe(":7000", router)
 	log.Println("Listening on 7000")
-}
-
-//route methods
-func getUsers(w http.ResponseWriter, r *http.Request) {
-	setupResponse(&w, r)
-
-	var users []models.User
-	var user models.User
-
-	db.Table("users").Find(&users)
-	users = append(users, user)
-
-	json.NewEncoder(w).Encode(users)
-}
-func postUsers(w http.ResponseWriter, r *http.Request) {
-
 }
 
 func setupResponse(w *http.ResponseWriter, r *http.Request) {
