@@ -30,7 +30,7 @@ func main() {
 
 func connectToDatabase() {
 
-	host := os.Getenv("HOST")
+	host := os.Getenv("DBHOST")
 	databaseUsername := os.Getenv("USERNAME")
 	password := os.Getenv("PASSWORD")
 	database := os.Getenv("DATABASE")
@@ -57,17 +57,23 @@ func connectToDatabase() {
 
 func handleRequest() {
 	router := mux.NewRouter()
+	router.HandleFunc("/app", homePage).Methods("GET")
 	router.HandleFunc("/users", getUsers).Methods("GET")
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("$PORT must be set")
+		port = "7000"
 	}
-	http.ListenAndServe(":"+port, router)
+	http.ListenAndServe(":"+port, nil)
+	log.Println(port)
 }
 
 //route methods
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
+	log.Println("hey")
+}
+
+func homePage(w http.ResponseWriter, r *http.Request) {
 	log.Println("hey")
 }
 
