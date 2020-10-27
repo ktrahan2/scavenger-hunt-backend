@@ -57,14 +57,13 @@ func connectToDatabase() {
 
 func handleRequest() {
 	router := mux.NewRouter()
-	router.HandleFunc("/app", homePage).Methods("GET")
+	router.HandleFunc("/", homePage).Methods("GET")
 	router.HandleFunc("/users", getUsers).Methods("GET")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "7000"
 	}
 	http.ListenAndServe(":"+port, nil)
-	log.Println(port)
 }
 
 //route methods
