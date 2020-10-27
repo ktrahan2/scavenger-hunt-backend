@@ -1,17 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
 )
 
 var db *gorm.DB
-
 var err error
 
 func init() {
@@ -26,11 +26,26 @@ func main() {
 	defer db.Close()
 }
 
-func handleRequest() {
-	router := mux.NewRouter()
-	router.HandleFunc("/users", getUsers).Methods("GET")
-	http.ListenAndServe(":7000", router)
-	log.Println("Listening on 7000")
+//InitialMigration connects to database and migrates table
+func InitialMigration() {
+	host := os.Getenv("DBHOST")
+	databaseUsername := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
+	database := os.Getenv("DATABASE")
+	dbport := os.Getenv("DBPORT")
+
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, dbport, databaseUsername, password, database)
+
+	db, err = gorm.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+
+	db.AutoMigrate(&User{})
+
+	fmt.Println("Successfully connected!")
 }
 
 func setupResponse(w *http.ResponseWriter, r *http.Request) {

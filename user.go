@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/jinzhu/gorm"
 )
 
-//User Table
+//User schema
 type User struct {
 	gorm.Model
 	Username string `json:"username"`
@@ -17,27 +16,13 @@ type User struct {
 	Email    string `json:"email"`
 }
 
-//InitialMigration connects to database and migrates table
-func InitialMigration() {
-	host := os.Getenv("DBHOST")
-	databaseUsername := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
-	database := os.Getenv("DATABASE")
-	dbport := os.Getenv("DBPORT")
+// GetUsers selects * from users
+func GetUsers(w http.ResponseWriter, r *http.Request) {
 
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, dbport, databaseUsername, password, database)
-
-	db, err = gorm.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
+	if r.Method != "GET" {
+		http.Error(w, http.StatusText(405), 405)
+		return
 	}
-
-	fmt.Println("Successfully connected!")
-}
-
-func getUsers(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 
 	var users []User
@@ -48,3 +33,39 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(users)
 }
+
+//GetUser selects user by id
+// func GetUser(w http.ResponseWriter, r *http.Request) {
+// 	// setupResponse(&w, r)
+// 	fmt.Fprintf(w, "get user endpoint hit")
+// }
+
+//NewUser creates a new user
+func newUser(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+
+	switch r.Method {
+	case "OPTIONS":
+		w.WriteHeader(http.StatusOK)
+		return
+	case "POST":
+		username := r.PostFormValue("username")
+		password := r.PostFormValue("password")
+		email := r.PostFormValue("email")
+		db.Create(&User{Username: username, Password: password, Email: email})
+	default:
+		http.Error(w, http.StatusText(405), 405)
+	}
+	//should return json to show how it works
+	fmt.Fprintf(w, "New User successful")
+}
+
+//DeleteUser removes a user by id
+// func DeleteUser(w http.ResponseWriter, r *http.Request) {
+
+// }
+
+// //UpdateUser updates a user by id
+// func UpdateUser(w http.ResponseWriter, r *http.Request) {
+
+// }
