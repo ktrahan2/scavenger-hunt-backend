@@ -1,1 +1,1 @@
-web: on-the-hunt
+web: bin/scavenger-hunt-backend
