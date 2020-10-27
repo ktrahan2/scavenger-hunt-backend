@@ -1,1 +1,1 @@
-web: scavenger-hunt-backend replace scavenger-hunt-backend
+web: user/UncleKy/go/capstone/scavenger-hunt-backend
