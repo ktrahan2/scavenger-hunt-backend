@@ -8,7 +8,6 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
-	// "github.com/ktrahan2/scavenger-hunt-backend/v2/models"
 )
 
 var db *gorm.DB
@@ -26,30 +25,6 @@ func main() {
 	handleRequest()
 	defer db.Close()
 }
-
-// func connectToDatabase() {
-
-// 	host := os.Getenv("DBHOST")
-// 	databaseUsername := os.Getenv("USERNAME")
-// 	password := os.Getenv("PASSWORD")
-// 	database := os.Getenv("DATABASE")
-// 	dbport := os.Getenv("DBPORT")
-
-// 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-// 		"password=%s dbname=%s sslmode=disable",
-// 		host, dbport, databaseUsername, password, database)
-
-// 	db, err = gorm.Open("postgres", psqlInfo)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	fmt.Println("Successfully connected!")
-
-// 	user := models.User{Username: "ktrain", Password: "123", Email: "ktrain@yahoo.com"}
-// 	db.Create(&user)
-
-// }
 
 func handleRequest() {
 	router := mux.NewRouter()

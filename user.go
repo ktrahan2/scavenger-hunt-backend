@@ -3,16 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/jinzhu/gorm"
-	"github.com/joho/godotenv"
 )
-
-var db *gorm.DB
-var err error
 
 //User Table
 type User struct {
@@ -20,12 +15,6 @@ type User struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Email    string `json:"email"`
-}
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
-	}
 }
 
 //InitialMigration connects to database and migrates table
