@@ -8,10 +8,11 @@ import (
 
 func handleRequest() {
 	router := mux.NewRouter()
-	router.HandleFunc("/users", GetUsers).Methods("GET")
-	router.HandleFunc("/users", newUser).Methods("POST")
-	// router.HandleFunc("/user/{username}", GetUser).Methods("GET")
-	// router.HandleFunc("/user/{username}/{password}/{email}", DeleteUser).Methods("DELETE")
-	// router.HandleFunc("user/id", UpdateUser).Methods("PUT")
+	//users
+	router.HandleFunc("/users", allUsers).Methods("GET")
+	router.HandleFunc("/create-user", newUser).Methods("POST")
+	router.HandleFunc("/user/{id}", getUser).Methods("GET")
+	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
+	router.HandleFunc("/update-user/{id}", UpdateUser).Methods("PUT")
 	http.ListenAndServe(":7000", router)
 }

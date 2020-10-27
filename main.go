@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -20,14 +23,40 @@ func init() {
 	}
 }
 
+func generateJWT() (string, error) {
+	mySigningKey := os.Getenv("SECRET")
+
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["authorized"] = true
+	claims["user"] = time.Now().Add(time.Minute * 30).Unix()
+
+	tokenString, err := token.SignedString(mySigningKey)
+
+	if err != nil {
+		fmt.Errorf("Something went wrong: %s", err.Error())
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
 func main() {
-	InitialMigration()
+	dataBaseConnection()
+	tokenString, err := generateJWT()
+
+	if err != nil {
+		fmt.Println("error generating string")
+	}
+	fmt.Println(tokenString)
 	handleRequest()
 	defer db.Close()
 }
 
-//InitialMigration connects to database and migrates table
-func InitialMigration() {
+//dataBaseConnection connects to database and migrates table
+func dataBaseConnection() {
 	host := os.Getenv("DBHOST")
 	databaseUsername := os.Getenv("USERNAME")
 	password := os.Getenv("PASSWORD")

@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
@@ -17,7 +19,7 @@ type User struct {
 }
 
 // GetUsers selects * from users
-func GetUsers(w http.ResponseWriter, r *http.Request) {
+func allUsers(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "GET" {
 		http.Error(w, http.StatusText(405), 405)
@@ -34,11 +36,19 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(users)
 }
 
-//GetUser selects user by id
-// func GetUser(w http.ResponseWriter, r *http.Request) {
-// 	// setupResponse(&w, r)
-// 	fmt.Fprintf(w, "get user endpoint hit")
-// }
+// GetUser selects user by id
+func getUser(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var user User
+
+	db.Table("users").Find(&user, key)
+
+	json.NewEncoder(w).Encode(user)
+
+	fmt.Fprintf(w, "get user endpoint hit")
+}
 
 //NewUser creates a new user
 func newUser(w http.ResponseWriter, r *http.Request) {
@@ -49,23 +59,44 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	case "POST":
-		username := r.PostFormValue("username")
-		password := r.PostFormValue("password")
-		email := r.PostFormValue("email")
-		db.Create(&User{Username: username, Password: password, Email: email})
+		reqBody, _ := ioutil.ReadAll(r.Body)
+		var user User
+		json.Unmarshal(reqBody, &user)
+		db.Create(&user)
+		json.NewEncoder(w).Encode(user)
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}
-	//should return json to show how it works
-	fmt.Fprintf(w, "New User successful")
 }
 
-//DeleteUser removes a user by id
-// func DeleteUser(w http.ResponseWriter, r *http.Request) {
+// DeleteUser removes a user by id
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var user User
 
-// }
+	db.Table("users").Find(&user, key)
 
-// //UpdateUser updates a user by id
-// func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	db.Delete(&user)
+}
 
-// }
+//UpdateUser updates a user by id
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var user User
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var updateduser User
+	json.Unmarshal(reqBody, &updateduser)
+
+	db.Table("users").Find(&user, key)
+
+	db.Model(&user).Updates(User{
+		Username: updateduser.Username,
+		Password: updateduser.Password,
+		Email:    updateduser.Email,
+	})
+}
