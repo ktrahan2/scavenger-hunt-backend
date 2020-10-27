@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -26,6 +27,7 @@ func init() {
 func main() {
 	connectToDatabase()
 	handleRequest()
+	defer db.Close()
 }
 
 func connectToDatabase() {
@@ -52,28 +54,30 @@ func connectToDatabase() {
 	user := models.User{Username: "ktrain", Password: "123", Email: "ktrain@yahoo.com"}
 	db.Create(&user)
 
-	defer db.Close()
 }
 
 func handleRequest() {
 	router := mux.NewRouter()
-	router.HandleFunc("/", homePage).Methods("GET")
 	router.HandleFunc("/users", getUsers).Methods("GET")
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "7000"
-	}
-	http.ListenAndServe(":"+port, nil)
+	router.HandleFunc("/users", postUsers).Methods("POST")
+	http.ListenAndServe(":7000", router)
+	log.Println("Listening on 7000")
 }
 
 //route methods
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
-	log.Println("hey")
-}
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	log.Println("hey")
+	var users []models.User
+	var user models.User
+
+	db.Table("users").Find(&users)
+	users = append(users, user)
+
+	json.NewEncoder(w).Encode(users)
+}
+func postUsers(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func setupResponse(w *http.ResponseWriter, r *http.Request) {
