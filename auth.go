@@ -54,18 +54,16 @@ func login(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			json.NewEncoder(w).Encode("Something went wrong please try again")
 		} else {
-			//then give them a token
 			validToken, err := generateJWT()
 
 			if err != nil {
 				fmt.Fprintf(w, err.Error())
 			}
-			fmt.Println(validToken)
+
 			Response := JWTTOKEN{
 				validToken,
 				user.ID,
 			}
-			//need to send this token and user.id in response
 			json.NewEncoder(w).Encode(Response)
 		}
 	default:
@@ -76,19 +74,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 //use this function to check for token in header.
 //like creating a custom hunt list.
 
-// func isAuthorized(endpoint func(http.ResponseWriter, *http.Request)) router.HandleFunc {
-// 	return router.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
+func isAuthorized(endpoint func(http.ResponseWriter, *http.Request)) {
 
-// 		if r.Header["Token"] != nil {
-// 			token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
-// 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-// 					return nil, fmt.Errorf("There was an error")
-// 				}
-// 				return mySigningKey, nil
-// 			})
-// 		} else {
-// 			fmt.Fprintf(w, "Not Authorized")
-// 		}
-
-// 	})
-// }
+}
