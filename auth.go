@@ -19,6 +19,7 @@ type JWTTOKEN struct {
 	ID    uint   `json:"id"`
 }
 
+//Claims is the structure of the claims from a token
 type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims

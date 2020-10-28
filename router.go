@@ -11,7 +11,8 @@ func handleRequest() {
 	secure := router.PathPrefix("/auth").Subrouter()
 	secure.Use(JwtVerify)
 	//users
-	secure.HandleFunc("/users", allUsers).Methods("GET")
+	// secure.HandleFunc("/users", allUsers).Methods("GET")
+	router.HandleFunc("/users", allUsers).Methods("GET")
 	router.HandleFunc("/create-user", newUser).Methods("POST")
 	router.HandleFunc("/user/{id}", getUser).Methods("GET")
 	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
