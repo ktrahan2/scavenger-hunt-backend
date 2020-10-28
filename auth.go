@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //JWTTOKEN is the structure of a Token
@@ -45,8 +46,14 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	case "POST":
 		reqBody, _ := ioutil.ReadAll(r.Body)
+		var receivedUser User
+		json.Unmarshal(reqBody, &receivedUser)
 		var user User
-		json.Unmarshal(reqBody, &user)
+		db.Where("username = ?", receivedUser.Username).First(&user)
+		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(receivedUser.Password))
+		if err != nil {
+			fmt.Println("Hello")
+		}
 
 		//then give them a token
 		validToken, err := generateJWT()
