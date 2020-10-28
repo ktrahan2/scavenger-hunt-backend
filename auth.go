@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -34,17 +36,34 @@ func generateJWT() (string, error) {
 	return tokenString, nil
 }
 
+//find the user by username, then compare that password with password sent in
 func login(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
+	switch r.Method {
+	case "OPTIONS":
+		w.WriteHeader(http.StatusOK)
+		return
+	case "POST":
+		reqBody, _ := ioutil.ReadAll(r.Body)
+		var user User
+		json.Unmarshal(reqBody, &user)
 
-	validToken, err := generateJWT()
+		//then give them a token
+		validToken, err := generateJWT()
 
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		}
+		fmt.Println(validToken)
+		//need to send this token in response
+	default:
+		http.Error(w, http.StatusText(405), 405)
 	}
-	fmt.Println(validToken)
-	//need to send this token in response
+
 }
+
+//use this function to check for token in header.
+//like creating a custom hunt list.
 
 // func isAuthorized(endpoint func(http.ResponseWriter, *http.Request)) router.HandleFunc {
 // 	return router.HandleFunc(func(w http.ResponseWriter, r *http.Request) {

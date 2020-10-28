@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //User schema
@@ -62,8 +63,24 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 		reqBody, _ := ioutil.ReadAll(r.Body)
 		var user User
 		json.Unmarshal(reqBody, &user)
+		hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
+		user = User{
+			Username: user.Username,
+			Password: string(hash),
+			Email:    user.Email,
+		}
+
 		db.Create(&user)
+
 		json.NewEncoder(w).Encode(user)
+
+		validToken, err := generateJWT()
+
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		}
+		fmt.Println(validToken)
+		//need to send token in response
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}
