@@ -72,15 +72,18 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 
 		db.Create(&user)
 
-		json.NewEncoder(w).Encode(user)
-
 		validToken, err := generateJWT()
 
 		if err != nil {
 			fmt.Fprintf(w, err.Error())
 		}
-		fmt.Println(validToken)
-		//need to send token in response
+
+		Response := JWTTOKEN{
+			validToken,
+			user.ID,
+		}
+		//need to send this token and user.id in response
+		json.NewEncoder(w).Encode(Response)
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}

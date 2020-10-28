@@ -15,6 +15,7 @@ import (
 //JWTTOKEN is the structure of a Token
 type JWTTOKEN struct {
 	Token string `json:"token"`
+	ID    uint   `json:"id"`
 }
 
 func generateJWT() (string, error) {
@@ -37,7 +38,6 @@ func generateJWT() (string, error) {
 	return tokenString, nil
 }
 
-//find the user by username, then compare that password with password sent in
 func login(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 	switch r.Method {
@@ -45,28 +45,32 @@ func login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	case "POST":
-		reqBody, _ := ioutil.ReadAll(r.Body)
 		var receivedUser User
-		json.Unmarshal(reqBody, &receivedUser)
 		var user User
+		reqBody, _ := ioutil.ReadAll(r.Body)
+		json.Unmarshal(reqBody, &receivedUser)
 		db.Where("username = ?", receivedUser.Username).First(&user)
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(receivedUser.Password))
 		if err != nil {
-			fmt.Println("Hello")
-		}
+			json.NewEncoder(w).Encode("Something went wrong please try again")
+		} else {
+			//then give them a token
+			validToken, err := generateJWT()
 
-		//then give them a token
-		validToken, err := generateJWT()
-
-		if err != nil {
-			fmt.Fprintf(w, err.Error())
+			if err != nil {
+				fmt.Fprintf(w, err.Error())
+			}
+			fmt.Println(validToken)
+			Response := JWTTOKEN{
+				validToken,
+				user.ID,
+			}
+			//need to send this token and user.id in response
+			json.NewEncoder(w).Encode(Response)
 		}
-		fmt.Println(validToken)
-		//need to send this token in response
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}
-
 }
 
 //use this function to check for token in header.
@@ -76,7 +80,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 // 	return router.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
 
 // 		if r.Header["Token"] != nil {
-
+// 			token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
+// 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+// 					return nil, fmt.Errorf("There was an error")
+// 				}
+// 				return mySigningKey, nil
+// 			})
 // 		} else {
 // 			fmt.Fprintf(w, "Not Authorized")
 // 		}
