@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -18,5 +19,11 @@ func handleRequest() {
 	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
 	router.HandleFunc("/update-user/{id}", UpdateUser).Methods("PUT")
 	router.HandleFunc("/login", login).Methods("OPTIONS", "POST")
-	http.ListenAndServe(":7000", router)
+
+	port := os.Getenv("PORT")
+	// if port == nil || port == "" {
+	// 	port = "7000"
+	// }
+
+	http.ListenAndServe(":"+port, router)
 }
