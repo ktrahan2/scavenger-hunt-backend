@@ -13,10 +13,10 @@ func handleRequest() {
 	//users
 	// secure.HandleFunc("/users", allUsers).Methods("GET")
 	router.HandleFunc("/users", allUsers).Methods("GET")
-	router.HandleFunc("/create-user", newUser).Methods("POST")
+	router.HandleFunc("/create-user", newUser).Methods("OPTIONS", "POST")
 	router.HandleFunc("/user/{id}", getUser).Methods("GET")
 	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
 	router.HandleFunc("/update-user/{id}", UpdateUser).Methods("PUT")
-	router.HandleFunc("/login", login).Methods("POST")
+	router.HandleFunc("/login", login).Methods("OPTIONS", "POST")
 	http.ListenAndServe(":7000", router)
 }

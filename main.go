@@ -43,7 +43,8 @@ func dataBaseConnection() {
 		panic(err)
 	}
 
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{}, &HuntItem{})
+	// seedHuntItems()
 
 	fmt.Println("Successfully connected!")
 }
