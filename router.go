@@ -21,9 +21,9 @@ func handleRequest() {
 	router.HandleFunc("/login", login).Methods("OPTIONS", "POST")
 
 	port := os.Getenv("PORT")
-	// if port == nil || port == "" {
-	// 	port = "7000"
-	// }
+	if port == "" {
+		port = "7000"
+	}
 
-	http.ListenAndServe(port, router)
+	http.ListenAndServe(":"+port, router)
 }
