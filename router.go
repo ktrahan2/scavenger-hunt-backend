@@ -25,5 +25,5 @@ func handleRequest() {
 	// 	port = "7000"
 	// }
 
-	http.ListenAndServe(":"+port, router)
+	http.ListenAndServe(port, router)
 }
