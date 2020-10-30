@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 
@@ -22,7 +23,7 @@ func handleRequest() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "7000"
+		log.Fatal("OH NO")
 	}
 
 	http.ListenAndServe(":"+port, router)

@@ -39,7 +39,7 @@ func dataBaseConnection() {
 	// 	host, dbport, databaseUsername, password, database)
 
 	databaseURL := os.Getenv("DATABASE_URL")
-	db, err = gorm.Open(databaseURL)
+	db, err = gorm.Open("postgres", databaseURL)
 	if err != nil {
 		panic(err)
 	}
