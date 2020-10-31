@@ -52,7 +52,7 @@ func getItem(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var huntItem HuntItem
 
-	db.Table("users").Find(&huntItem, key)
+	db.Table("hunt_items").Find(&huntItem, key)
 
 	json.NewEncoder(w).Encode(huntItem)
 }
