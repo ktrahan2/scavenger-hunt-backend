@@ -47,7 +47,7 @@ func dataBaseConnection() {
 	}
 
 	db.AutoMigrate(&User{}, &HuntItem{})
-	// seedHuntItems()
+	seedHuntItems()
 
 	fmt.Println("Successfully connected!")
 }
