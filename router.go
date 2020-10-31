@@ -20,7 +20,8 @@ func handleRequest() {
 	router.HandleFunc("/delete-user/{id}", DeleteUser).Methods("DELETE")
 	router.HandleFunc("/update-user/{id}", UpdateUser).Methods("PUT")
 	router.HandleFunc("/login", login).Methods("OPTIONS", "POST")
-
+	//hunt_items
+	router.HandleFunc("/hunt_items", allItems).Methods("GET")
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("OH NO")
