@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
@@ -43,4 +44,15 @@ func allItems(w http.ResponseWriter, r *http.Request) {
 	items = append(items, item)
 
 	json.NewEncoder(w).Encode(items)
+}
+
+func getItem(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var huntItem HuntItem
+
+	db.Table("users").Find(&huntItem, key)
+
+	json.NewEncoder(w).Encode(huntItem)
 }
