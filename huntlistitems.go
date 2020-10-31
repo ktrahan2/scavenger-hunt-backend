@@ -13,20 +13,14 @@ type HuntItem struct {
 }
 
 func seedHuntItems() {
-	var huntItems = []HuntItem{
-		{
-			Name:  "squirrel",
-			Image: "",
-			Theme: "nature",
-		},
-		{
-			Name:  "acorn",
-			Image: "https://media.istockphoto.com/photos/one-acorn-picture-id187333325?k=6&m=187333325&s=612x612&w=0&h=erzhZENyxgwPPKDiegjV6lNwDJFmP6iZUNNLDvmD1DI=",
-			Theme: "nature",
-		},
-	}
+	huntItem := HuntItem{Name: "squirrel", Image: "", Theme: "nature"}
+	// {
+	// 	Name:  "acorn",
+	// 	Image: "https://media.istockphoto.com/photos/one-acorn-picture-id187333325?k=6&m=187333325&s=612x612&w=0&h=erzhZENyxgwPPKDiegjV6lNwDJFmP6iZUNNLDvmD1DI=",
+	// 	Theme: "nature",
+	// },
 
-	db.Create(&huntItems)
+	db.Create(&huntItem)
 
 }
 

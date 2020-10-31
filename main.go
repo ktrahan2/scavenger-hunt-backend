@@ -28,6 +28,8 @@ func main() {
 
 //dataBaseConnection connects to database and migrates table
 func dataBaseConnection() {
+
+	//use psql info in order to use local database
 	// host := os.Getenv("DBHOST")
 	// databaseUsername := os.Getenv("USERNAME")
 	// password := os.Getenv("PASSWORD")
