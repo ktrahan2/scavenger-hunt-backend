@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"net/http"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -24,15 +27,20 @@ func seedHuntItems() {
 
 }
 
-// func allItems(w http.ResponseWriter, r *http.Request) {
+func allItems(w http.ResponseWriter, r *http.Request) {
 
-// 	if r.Method != "GET" {
-// 		http.Error(w, http.StatusText(405), 405)
-// 		return
-// 	}
+	if r.Method != "GET" {
+		http.Error(w, http.StatusText(405), 405)
+		return
+	}
 
-// 	setupResponse(&w, r)
+	setupResponse(&w, r)
 
-// 	var items []HuntItem
-// 	var item HuntItem
-// }
+	var items []HuntItem
+	var item HuntItem
+
+	db.Table("hunt_items").Find(&items)
+	items = append(items, item)
+
+	json.NewEncoder(w).Encode(items)
+}
