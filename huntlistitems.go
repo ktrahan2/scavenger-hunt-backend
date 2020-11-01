@@ -28,6 +28,7 @@ func seedHuntItems() {
 
 }
 
+//allItems gets all hunt items
 func allItems(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "GET" {
@@ -46,6 +47,7 @@ func allItems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
+//getItem grabs a hunt item by id
 func getItem(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 	vars := mux.Vars(r)
