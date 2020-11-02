@@ -116,7 +116,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	db.Model(&user).Updates(User{
 		Username: updateduser.Username,
-		// Password: updateduser.Password,
-		Email: updateduser.Email,
+		Password: updateduser.Password,
+		Email:    updateduser.Email,
 	})
+
 }
