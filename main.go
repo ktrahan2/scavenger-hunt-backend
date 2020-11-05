@@ -45,7 +45,7 @@ func dataBaseConnection() {
 	if err != nil {
 		panic(err)
 	}
-	db.DropTable(&HuntItem{})
+
 	db.AutoMigrate(&User{}, &HuntItem{})
 	// seedHuntItems()
 
