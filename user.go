@@ -14,9 +14,10 @@ import (
 //User schema
 type User struct {
 	gorm.Model
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
+	Username   string      `json:"username"`
+	Password   string      `json:"password"`
+	Email      string      `json:"email"`
+	HuntListID []*HuntList `gorm:"many2many:user_lists;"`
 }
 
 // GetUsers selects * from users

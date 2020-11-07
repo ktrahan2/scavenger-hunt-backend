@@ -23,6 +23,10 @@ func handleRequest() {
 	router.HandleFunc("/hunt-items", allItems).Methods("GET")
 	router.HandleFunc("/hunt-items/{id}", getItem).Methods("GET")
 	router.HandleFunc("/update-hunt-item/{id}", updateHuntItem).Methods("PUT")
+	//hunt_lists
+	router.HandleFunc("/hunt-lists", allHuntLists).Methods("GET")
+	router.HandleFunc("/hunt-lists/{id}", getHuntList).Methods("GET")
+	router.HandleFunc("/create-hunt-list", newList).Methods("POST", "OPTIONS")
 
 	port := os.Getenv("PORT")
 	if port == "" {
