@@ -12,9 +12,9 @@ import (
 //HuntList is the list created randomly and saved to a user
 type HuntList struct {
 	gorm.Model
-	Title   string  `json:"title"`
-	OwnerID uint    `json:"ownerid"`
-	Users   []*User `gorm:"many2many:user_lists;"`
+	Title   string `json:"title"`
+	OwnerID uint   `json:"ownerid"`
+	Users   []User `gorm:"many2many:user_lists;"`
 }
 
 //allHuntLists selects * from hunt_lists

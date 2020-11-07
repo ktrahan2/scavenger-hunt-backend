@@ -6,14 +6,13 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 )
 
 //UserList is the struct of the user lists table
 type UserList struct {
-	gorm.Model
-	HuntListID uint `json:"huntlistid"`
-	UserID     uint `json:"userid"`
+	// gorm.Model
+	HuntListID uint
+	UserID     uint
 }
 
 //allUserLists is the index for user lists
@@ -62,18 +61,8 @@ func newUserList(w http.ResponseWriter, r *http.Request) {
 			HuntListID: userList.HuntListID,
 			UserID:     userList.UserID,
 		}
-		var user User
-		db.Table("users").Find(&user, userList.UserID)
-		var huntList HuntList
-		db.Table("hunt_lists").Find(&huntList, userList.HuntListID)
-		db.Model(&user).Updates(User{
-			HuntLists: []HuntList{
-				{&huntList},
-			},
-		})
 
 		db.Create(&userList)
-		// db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&User)
 
 		json.NewEncoder(w).Encode(&userList)
 	default:
