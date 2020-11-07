@@ -47,8 +47,8 @@ func getHuntList(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(huntList)
 }
 
-//newList creates a new hunt list
-func newList(w http.ResponseWriter, r *http.Request) {
+//newHuntList creates a new hunt list
+func newHuntList(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
 
 	switch r.Method {
@@ -62,6 +62,7 @@ func newList(w http.ResponseWriter, r *http.Request) {
 		huntList = HuntList{
 			Title:   huntList.Title,
 			OwnerID: huntList.OwnerID,
+			Users:   huntList.Users,
 		}
 
 		db.Create(&huntList)

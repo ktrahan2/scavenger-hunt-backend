@@ -14,10 +14,10 @@ import (
 //User schema
 type User struct {
 	gorm.Model
-	Username   string      `json:"username"`
-	Password   string      `json:"password"`
-	Email      string      `json:"email"`
-	HuntListID []*HuntList `gorm:"many2many:user_lists;"`
+	Username  string      `json:"username"`
+	Password  string      `json:"password"`
+	Email     string      `json:"email"`
+	HuntLists []*HuntList `gorm:"many2many:user_lists;"`
 }
 
 // GetUsers selects * from users
@@ -83,7 +83,6 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 			validToken,
 			user.ID,
 		}
-		//need to send this token and user.id in response
 		json.NewEncoder(w).Encode(Response)
 	default:
 		http.Error(w, http.StatusText(405), 405)
@@ -116,9 +115,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	db.Table("users").Find(&user, key)
 
 	db.Model(&user).Updates(User{
-		Username: updateduser.Username,
-		Password: updateduser.Password,
-		Email:    updateduser.Email,
+		Username:  updateduser.Username,
+		Password:  updateduser.Password,
+		Email:     updateduser.Email,
+		HuntLists: updateduser.HuntLists,
 	})
 
 }
