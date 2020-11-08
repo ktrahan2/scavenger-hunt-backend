@@ -32,6 +32,11 @@ func handleRequest() {
 	router.HandleFunc("/user-lists/{id}", getUserList).Methods("GET")
 	router.HandleFunc("/create-user-list", newUserList).Methods("POST", "OPTIONS")
 	router.HandleFunc("/update-hunt-list/{id}", updateHuntList).Methods("PUT")
+	//selected_items
+	router.HandleFunc("/selected-items", allSelectedItems).Methods("GET")
+	router.HandleFunc("/selected-items/{id}", getSelectedItem).Methods("GET")
+	router.HandleFunc("/create-selected-item", newSelectedItem).Methods("POST", "OPTIONS")
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "7000"

@@ -12,9 +12,11 @@ import (
 //HuntItem struct is my table for items
 type HuntItem struct {
 	gorm.Model
-	Name  string `json:"name"`
-	Image string `json:"image"`
-	Theme string `json:"theme"`
+	Name      string     `json:"name"`
+	Image     string     `json:"image"`
+	Theme     string     `json:"theme"`
+	IsChecked bool       `json:"ischecked"`
+	HuntLists []HuntList `gorm:"many2many:selected_items;"`
 }
 
 //allItems gets all hunt items
@@ -30,7 +32,7 @@ func allItems(w http.ResponseWriter, r *http.Request) {
 	var items []HuntItem
 	var item HuntItem
 
-	db.Table("hunt_items").Find(&items)
+	db.Preload("HuntLists").Find(&items)
 	items = append(items, item)
 
 	json.NewEncoder(w).Encode(items)

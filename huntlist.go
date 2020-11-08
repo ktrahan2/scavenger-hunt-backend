@@ -12,9 +12,10 @@ import (
 //HuntList is the list created randomly and saved to a user
 type HuntList struct {
 	gorm.Model
-	Title   string `json:"title"`
-	OwnerID uint   `json:"ownerid"`
-	Users   []User `gorm:"many2many:user_lists;"`
+	Title     string     `json:"title"`
+	OwnerID   uint       `json:"ownerid"`
+	Users     []User     `gorm:"many2many:user_lists;"`
+	HuntItems []HuntItem `gorm:"many2many:selected_items;"`
 }
 
 //allHuntLists selects * from hunt_lists
@@ -29,7 +30,7 @@ func allHuntLists(w http.ResponseWriter, r *http.Request) {
 	var huntLists []HuntList
 	var huntlist HuntList
 
-	db.Debug().Preload("Users").Find(&huntLists)
+	db.Debug().Preload("Users").Preload("HuntItems").Find(&huntLists)
 	huntLists = append(huntLists, huntlist)
 
 	json.NewEncoder(w).Encode(huntLists)
