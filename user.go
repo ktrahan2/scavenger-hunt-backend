@@ -17,7 +17,7 @@ type User struct {
 	Username  string     `json:"username"`
 	Password  string     `json:"password"`
 	Email     string     `json:"email"`
-	HuntLists []HuntList `gorm:"many2many:user_list;"`
+	HuntLists []HuntList `gorm:"many2many:user_lists;"`
 }
 
 // GetUsers selects * from users
