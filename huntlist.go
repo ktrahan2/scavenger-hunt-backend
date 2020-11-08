@@ -29,7 +29,7 @@ func allHuntLists(w http.ResponseWriter, r *http.Request) {
 	var huntLists []HuntList
 	var huntlist HuntList
 
-	db.Table("hunt_lists").Find(&huntLists)
+	db.Preload("Users").Find(&huntLists)
 	huntLists = append(huntLists, huntlist)
 
 	json.NewEncoder(w).Encode(huntLists)
