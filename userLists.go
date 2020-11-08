@@ -12,8 +12,8 @@ import (
 //UserList scehma
 type UserList struct {
 	gorm.Model
-	HuntList   HuntList `gorm:"foreignKey:HuntListID;references:HuntListID"`
-	User       User     `gorm:"foreignKey:UserID;references:UserID"`
+	HuntList   HuntList `gorm:"foreignKey:HuntListID;references:ID"`
+	User       User     `gorm:"foreignKey:UserID;references:id"`
 	HuntListID int
 	UserID     int
 }

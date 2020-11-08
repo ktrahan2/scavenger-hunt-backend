@@ -14,7 +14,7 @@ type HuntList struct {
 	gorm.Model
 	Title   string `json:"title"`
 	OwnerID uint   `json:"ownerid"`
-	Users   []User `gorm:"many2many:user_lists;"`
+	Users   []User
 }
 
 //allHuntLists selects * from hunt_lists
