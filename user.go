@@ -14,10 +14,10 @@ import (
 //User schema
 type User struct {
 	gorm.Model
-	Username  string      `json:"username"`
-	Password  string      `json:"password"`
-	Email     string      `json:"email"`
-	HuntLists []*HuntList `gorm:"many2many:user_lists;"`
+	Username  string     `json:"username"`
+	Password  string     `json:"password"`
+	Email     string     `json:"email"`
+	HuntLists []HuntList `gorm:"many2many:user_lists;"`
 }
 
 // GetUsers selects * from users
@@ -32,7 +32,7 @@ func allUsers(w http.ResponseWriter, r *http.Request) {
 	var users []User
 	var user User
 
-	db.Table("users").Find(&users)
+	db.Debug().Preload("HuntLists").Find(&users)
 	users = append(users, user)
 
 	json.NewEncoder(w).Encode(users)
@@ -45,7 +45,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var user User
 
-	db.Table("users").Find(&user, key)
+	db.Debug().Find(&user, key)
 
 	json.NewEncoder(w).Encode(user)
 
@@ -112,7 +112,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	var updateduser User
 	json.Unmarshal(reqBody, &updateduser)
 
-	db.Table("users").Find(&user, key)
+	db.Find(&user, key)
 
 	db.Model(&user).Updates(User{
 		Username:  updateduser.Username,
