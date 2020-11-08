@@ -52,6 +52,8 @@ func dataBaseConnection() {
 		&HuntList{},
 		&UserList{},
 	)
+	db.Model(&UserList{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.Model(&UserList{}).AddForeignKey("hunt_list_id", "hunt_lists(id)", "RESTRICT", "RESTRICT")
 	// seedHuntItems()
 
 	fmt.Println("Successfully connected!")

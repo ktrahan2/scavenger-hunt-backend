@@ -14,11 +14,10 @@ import (
 //User schema
 type User struct {
 	gorm.Model
-	Username   string     `json:"username"`
-	Password   string     `json:"password"`
-	Email      string     `json:"email"`
-	HuntLists  []HuntList `gorm:"foreignKey:HuntListID;references:ID"`
-	HuntListID int
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	Email     string `json:"email"`
+	HuntLists []HuntList
 }
 
 // GetUsers selects * from users
