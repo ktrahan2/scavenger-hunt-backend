@@ -12,8 +12,14 @@ import (
 //SelectedItem is the selected items schema
 type SelectedItem struct {
 	gorm.Model
-	HuntListID uint
-	HuntItemID uint
+	HuntListID int
+	HuntItemID int
+}
+
+//IncomingList is a list of HuntItemIDs
+type IncomingList struct {
+	HuntListID int
+	HuntItemID []int
 }
 
 //allHuntLists selects * from hunt_lists
@@ -56,16 +62,24 @@ func newSelectedItem(w http.ResponseWriter, r *http.Request) {
 		return
 	case "POST":
 		reqBody, _ := ioutil.ReadAll(r.Body)
-		var selectedItem SelectedItem
-		json.Unmarshal(reqBody, &selectedItem)
-		selectedItem = SelectedItem{
-			HuntListID: selectedItem.HuntListID,
-			HuntItemID: selectedItem.HuntItemID,
+
+		var incomingItems IncomingList
+		json.Unmarshal(reqBody, &incomingItems)
+		items := incomingItems.HuntItemID
+
+		for i := 0; i <= len(items); i++ {
+			var selectedItem SelectedItem
+
+			selectedItem = SelectedItem{
+				HuntListID: incomingItems.HuntListID,
+				HuntItemID: incomingItems.HuntItemID[i],
+			}
+			db.Create(&selectedItem)
+			var selectedItems []SelectedItem
+			selectedItems = append(selectedItems, selectedItem)
+			json.NewEncoder(w).Encode(&selectedItems)
 		}
 
-		db.Create(&selectedItem)
-
-		json.NewEncoder(w).Encode(&selectedItem)
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}
