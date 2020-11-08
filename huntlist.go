@@ -29,7 +29,7 @@ func allHuntLists(w http.ResponseWriter, r *http.Request) {
 	var huntLists []HuntList
 	var huntlist HuntList
 
-	db.Preload("Users").Find(&huntLists)
+	db.Debug().Preload("Users").Find(&huntLists)
 	huntLists = append(huntLists, huntlist)
 
 	json.NewEncoder(w).Encode(huntLists)
@@ -42,7 +42,7 @@ func getHuntList(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var huntList HuntList
 
-	db.Table("hunt_lists").Find(&huntList, key)
+	db.Preload("Users").Find(&huntList, key)
 
 	json.NewEncoder(w).Encode(huntList)
 }

@@ -45,11 +45,9 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var user User
 
-	db.Debug().Find(&user, key)
+	db.Preload("HuntLists").Find(&user, key)
 
 	json.NewEncoder(w).Encode(user)
-
-	fmt.Fprintf(w, "get user endpoint hit")
 }
 
 //NewUser creates a new user
