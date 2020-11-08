@@ -45,15 +45,15 @@ func dataBaseConnection() {
 	if err != nil {
 		panic(err)
 	}
-
+	db.DropTable(&UserList{})
 	db.AutoMigrate(
 		&User{},
 		&HuntItem{},
 		&HuntList{},
-		&UserList{},
+		// &UserList{},
 	)
-	db.Model(&UserList{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
-	db.Model(&UserList{}).AddForeignKey("hunt_list_id", "hunt_lists(id)", "RESTRICT", "RESTRICT")
+	db.Table("user_list").AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
+	db.Model("user_list").AddForeignKey("hunt_list_id", "hunt_lists(id)", "RESTRICT", "RESTRICT")
 	// seedHuntItems()
 
 	fmt.Println("Successfully connected!")
