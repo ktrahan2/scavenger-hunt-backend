@@ -67,7 +67,7 @@ func newSelectedItem(w http.ResponseWriter, r *http.Request) {
 		json.Unmarshal(reqBody, &incomingItems)
 		items := incomingItems.HuntItemID
 
-		for i := 0; i <= len(items); i++ {
+		for i := 0; i < len(items); i++ {
 			var selectedItem SelectedItem
 
 			selectedItem = SelectedItem{
@@ -75,9 +75,9 @@ func newSelectedItem(w http.ResponseWriter, r *http.Request) {
 				HuntItemID: incomingItems.HuntItemID[i],
 			}
 			db.Create(&selectedItem)
-			var selectedItems []SelectedItem
-			selectedItems = append(selectedItems, selectedItem)
-			json.NewEncoder(w).Encode(&selectedItems)
+			// var selectedItems []SelectedItem
+			// selectedItems = append(selectedItems, selectedItem)
+			json.NewEncoder(w).Encode(&selectedItem)
 		}
 
 	default:
