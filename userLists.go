@@ -6,13 +6,14 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 )
 
 //UserList scehma
 type UserList struct {
-	// gorm.Model
-	// HuntList   HuntList `gorm:"foreignKey:HuntListID;references:id"`
-	// User       User     `gorm:"foreignKey:UserID;references:id"`
+	gorm.Model
+	HuntList   HuntList `gorm:"foreignKey:HuntListID;references:id"`
+	User       User     `gorm:"foreignKey:UserID;references:id"`
 	HuntListID uint
 	UserID     uint
 }
@@ -29,7 +30,7 @@ func allUserLists(w http.ResponseWriter, r *http.Request) {
 	var userLists []UserList
 	var userList UserList
 
-	db.Preload("HuntLists").Preload("Users").Find(&userLists)
+	db.Find(&userLists)
 	userLists = append(userLists, userList)
 
 	json.NewEncoder(w).Encode(userLists)
@@ -64,11 +65,7 @@ func newUserList(w http.ResponseWriter, r *http.Request) {
 			UserID:     userList.UserID,
 		}
 		db.Create(&userList)
-		// var user User
-		// var huntList HuntList
-		// db.Find(&user, userList.UserID)
-		// db.Find(&huntList, userList.HuntListID)
-		// db.Model(&user).Association("HuntLists").Append([]HuntList{huntList})
+
 		json.NewEncoder(w).Encode(&userList)
 	default:
 		http.Error(w, http.StatusText(405), 405)
