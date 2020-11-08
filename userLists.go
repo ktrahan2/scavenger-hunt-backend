@@ -6,12 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
 )
 
 //UserList scehma
 type UserList struct {
-	gorm.Model
+	// gorm.Model
 	HuntListID uint
 	UserID     uint
 }
