@@ -72,3 +72,23 @@ func newHuntList(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(405), 405)
 	}
 }
+
+//UpdateHuntList allows updating an huntlist entry
+func updateHuntList(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var huntList HuntList
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var updatedHuntList HuntList
+	json.Unmarshal(reqBody, &updatedHuntList)
+
+	db.Find(&huntList, key)
+
+	db.Model(&huntList).Updates(HuntList{
+		Title:   updatedHuntList.Title,
+		OwnerID: updatedHuntList.OwnerID,
+		Users:   updatedHuntList.Users,
+	})
+}

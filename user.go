@@ -31,6 +31,7 @@ func allUsers(w http.ResponseWriter, r *http.Request) {
 
 	var users []User
 	var user User
+
 	db.Debug().Preload("HuntLists").Find(&users)
 	users = append(users, user)
 
@@ -119,5 +120,4 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		Email:     updateduser.Email,
 		HuntLists: updateduser.HuntLists,
 	})
-
 }
