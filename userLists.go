@@ -14,8 +14,8 @@ type UserList struct {
 	gorm.Model
 	HuntList   HuntList `gorm:"foreignKey:HuntListID;references:id"`
 	User       User     `gorm:"foreignKey:UserID;references:id"`
-	HuntListID uint
-	UserID     uint
+	HuntListID int
+	UserID     int
 }
 
 //allUserLists is the index for user lists
