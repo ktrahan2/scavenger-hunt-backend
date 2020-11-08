@@ -50,7 +50,7 @@ func dataBaseConnection() {
 		&User{},
 		&HuntItem{},
 		&HuntList{},
-		// &UserList{},
+		&UserList{},
 	)
 	// seedHuntItems()
 
