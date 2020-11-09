@@ -30,21 +30,27 @@ func main() {
 func dataBaseConnection() {
 
 	// use psql info in order to use local database
-	host := os.Getenv("DBHOST")
-	databaseUsername := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
-	database := os.Getenv("DATABASE")
-	dbport := os.Getenv("DBPORT")
+	// host := os.Getenv("DBHOST")
+	// databaseUsername := os.Getenv("USERNAME")
+	// password := os.Getenv("PASSWORD")
+	// database := os.Getenv("DATABASE")
+	// dbport := os.Getenv("DBPORT")
 
-	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, dbport, databaseUsername, password, database)
+	// psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
+	// 	"password=%s dbname=%s sslmode=disable",
+	// 	host, dbport, databaseUsername, password, database)
 
-	// databaseURL := os.Getenv("DATABASE_URL")
-	db, err = gorm.Open("postgres", psqlInfo)
+	databaseURL := os.Getenv("DATABASE_URL")
+	db, err = gorm.Open("postgres", databaseURL)
 	if err != nil {
 		panic(err)
 	}
+	db.DropTable(
+		&User{},
+		&HuntList{},
+		&UserList{},
+		&SelectedItem{},
+	)
 	db.AutoMigrate(
 		&User{},
 		&HuntItem{},

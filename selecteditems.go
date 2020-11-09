@@ -16,10 +16,10 @@ type SelectedItem struct {
 	HuntItemID int
 }
 
-//IncomingList is a list of HuntItemIDs
-type IncomingList struct {
-	HuntListID int
-	HuntItemID []int
+//IncomingItems is a list of HuntItemIDs
+type IncomingItems struct {
+	HuntListID  int
+	HuntItemIDs []int
 }
 
 //allHuntLists selects * from hunt_lists
@@ -63,20 +63,19 @@ func newSelectedItem(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		reqBody, _ := ioutil.ReadAll(r.Body)
 
-		var incomingItems IncomingList
+		var incomingItems IncomingItems
 		json.Unmarshal(reqBody, &incomingItems)
-		items := incomingItems.HuntItemID
+		items := incomingItems.HuntItemIDs
 
 		for i := 0; i < len(items); i++ {
 			var selectedItem SelectedItem
 
 			selectedItem = SelectedItem{
 				HuntListID: incomingItems.HuntListID,
-				HuntItemID: incomingItems.HuntItemID[i],
+				HuntItemID: incomingItems.HuntItemIDs[i],
 			}
 			db.Create(&selectedItem)
-			// var selectedItems []SelectedItem
-			// selectedItems = append(selectedItems, selectedItem)
+
 			json.NewEncoder(w).Encode(&selectedItem)
 		}
 
