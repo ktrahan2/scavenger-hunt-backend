@@ -43,7 +43,7 @@ func getHuntList(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var huntList HuntList
 
-	db.Preload("Users").Find(&huntList, key)
+	db.Preload("Users").Preload("HuntItems").Find(&huntList, key)
 
 	json.NewEncoder(w).Encode(huntList)
 }
