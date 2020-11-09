@@ -53,7 +53,7 @@ func dataBaseConnection() {
 		&UserList{},
 		&SelectedItem{},
 	)
-	// seedHuntItems()
+	seedHuntItems()
 
 	fmt.Println("Successfully connected!")
 }
