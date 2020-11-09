@@ -32,7 +32,7 @@ func allUsers(w http.ResponseWriter, r *http.Request) {
 	var users []User
 	var user User
 
-	db.Debug().Preload("HuntLists.HuntItems").Find(&users)
+	db.Preload("HuntLists.HuntItems").Find(&users)
 	users = append(users, user)
 
 	json.NewEncoder(w).Encode(users)
