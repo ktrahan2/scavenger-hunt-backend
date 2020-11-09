@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/lib/pq"
+
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -14,7 +16,7 @@ type UserList struct {
 	gorm.Model
 	HuntListID  uint
 	UserID      uint
-	CheckedItem [15]string
+	CheckedItem pq.StringArray `gorm:"type:string[]"`
 }
 
 //allUserLists is the index for user lists
