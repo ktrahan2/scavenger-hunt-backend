@@ -45,7 +45,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var user User
 
-	db.Preload("HuntLists").Find(&user, key)
+	db.Preload("HuntLists.HuntItems").Find(&user, key)
 
 	json.NewEncoder(w).Encode(user)
 }
