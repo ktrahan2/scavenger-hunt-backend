@@ -45,10 +45,8 @@ func dataBaseConnection() {
 	if err != nil {
 		panic(err)
 	}
-	db.DropTable(&User{})
 	db.DropTable(&HuntList{})
-	db.DropTable(&UserList{})
-	db.DropTable(&SelectedItem{})
+	db.DropTable(&User{})
 	db.AutoMigrate(
 		&User{},
 		&HuntItem{},
