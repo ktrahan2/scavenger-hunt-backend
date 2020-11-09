@@ -31,6 +31,7 @@ func handleRequest() {
 	//user_lists
 	router.HandleFunc("/user-lists", allUserLists).Methods("GET")
 	router.HandleFunc("/user-lists/{id}", getUserList).Methods("GET")
+	router.HandleFunc("/user-lists/{userid}/{huntlistid}", getSpecificList).Methods("GET")
 	router.HandleFunc("/create-user-list", newUserList).Methods("POST", "OPTIONS")
 	router.HandleFunc("/update-user-list", updateUserList).Methods("PUT")
 	//selected_items

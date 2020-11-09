@@ -49,6 +49,19 @@ func getUserList(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userList)
 }
 
+func getSpecificList(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	userID := vars["userid"]
+	huntListID := vars["huntlistid"]
+	var userList []UserList
+
+	db.Where("user_id = ? AND hunt_list_id = ?", userID, huntListID).Find(&userList)
+
+	json.NewEncoder(w).Encode(userList)
+
+}
+
 //newUserList creates a new users list
 func newUserList(w http.ResponseWriter, r *http.Request) {
 	setupResponse(&w, r)
@@ -92,4 +105,7 @@ func updateUserList(w http.ResponseWriter, r *http.Request) {
 		UserID:      updatedUserList.UserID,
 		CheckedItem: updatedUserList.CheckedItem,
 	})
+
+	json.NewEncoder(w).Encode(&userList)
+
 }
