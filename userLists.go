@@ -73,3 +73,23 @@ func newUserList(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(405), 405)
 	}
 }
+
+//UpdateUserList updates a userlist by id
+func updateUserList(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var userList UserList
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var updatedUserList UserList
+	json.Unmarshal(reqBody, &updatedUserList)
+
+	db.Find(&userList, key)
+
+	db.Model(&userList).Updates(UserList{
+		HuntListID:  updatedUserList.HuntListID,
+		UserID:      updatedUserList.UserID,
+		CheckedItem: updatedUserList.CheckedItem,
+	})
+}

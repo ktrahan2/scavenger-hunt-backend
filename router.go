@@ -27,11 +27,12 @@ func handleRequest() {
 	router.HandleFunc("/hunt-lists", allHuntLists).Methods("GET")
 	router.HandleFunc("/hunt-lists/{id}", getHuntList).Methods("GET")
 	router.HandleFunc("/create-hunt-list", newHuntList).Methods("POST", "OPTIONS")
+	router.HandleFunc("/update-hunt-list/{id}", updateHuntList).Methods("PUT")
 	//user_lists
 	router.HandleFunc("/user-lists", allUserLists).Methods("GET")
 	router.HandleFunc("/user-lists/{id}", getUserList).Methods("GET")
 	router.HandleFunc("/create-user-list", newUserList).Methods("POST", "OPTIONS")
-	router.HandleFunc("/update-hunt-list/{id}", updateHuntList).Methods("PUT")
+	router.HandleFunc("/update-user-list", updateUserList).Methods("PUT")
 	//selected_items
 	router.HandleFunc("/selected-items", allSelectedItems).Methods("GET")
 	router.HandleFunc("/selected-items/{id}", getSelectedItem).Methods("GET")
