@@ -52,13 +52,13 @@ func dataBaseConnection() {
 	db.DropTable(&HuntList{})
 	db.DropTable(&User{})
 
-	db.AutoMigrate(
-		&User{},
-		&HuntItem{},
-		&HuntList{},
-		&UserList{},
-		&SelectedItem{},
-	)
+	// db.AutoMigrate(
+	// 	&User{},
+	// 	&HuntItem{},
+	// 	&HuntList{},
+	// 	&UserList{},
+	// 	&SelectedItem{},
+	// )
 	// seedHuntItems()
 
 	fmt.Println("Successfully connected!")
