@@ -16,7 +16,7 @@ type UserList struct {
 	gorm.Model
 	HuntListID  uint
 	UserID      uint
-	CheckedItem pq.StringArray `gorm:"type:string[]"`
+	CheckedItem pq.StringArray `gorm:"type:text[]"`
 }
 
 //allUserLists is the index for user lists
