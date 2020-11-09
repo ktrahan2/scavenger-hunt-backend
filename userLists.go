@@ -62,8 +62,9 @@ func newUserList(w http.ResponseWriter, r *http.Request) {
 		var userList UserList
 		json.Unmarshal(reqBody, &userList)
 		userList = UserList{
-			HuntListID: userList.HuntListID,
-			UserID:     userList.UserID,
+			HuntListID:  userList.HuntListID,
+			UserID:      userList.UserID,
+			CheckedItem: userList.CheckedItem,
 		}
 		db.Create(&userList)
 
