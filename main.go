@@ -46,20 +46,14 @@ func dataBaseConnection() {
 		panic(err)
 	}
 
-	db.DropTable(&SelectedItem{})
-	db.DropTable(&UserList{})
-	db.DropTable(&HuntItem{})
-	db.DropTable(&HuntList{})
-	db.DropTable(&User{})
-
-	// db.AutoMigrate(
-	// 	&User{},
-	// 	&HuntItem{},
-	// 	&HuntList{},
-	// 	&UserList{},
-	// 	&SelectedItem{},
-	// )
-	// seedHuntItems()
+	db.AutoMigrate(
+		&User{},
+		&HuntItem{},
+		&HuntList{},
+		&UserList{},
+		&SelectedItem{},
+	)
+	seedHuntItems()
 
 	fmt.Println("Successfully connected!")
 }
