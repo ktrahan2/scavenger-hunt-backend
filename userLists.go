@@ -12,8 +12,9 @@ import (
 //UserList scehma
 type UserList struct {
 	gorm.Model
-	HuntListID uint
-	UserID     uint
+	HuntListID  uint
+	UserID      uint
+	CheckedItem [15]string
 }
 
 //allUserLists is the index for user lists
