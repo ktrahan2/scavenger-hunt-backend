@@ -66,9 +66,10 @@ func newHuntList(w http.ResponseWriter, r *http.Request) {
 			Users:   huntList.Users,
 		}
 
-		db.Create(&huntList)
+		// db.Create(&huntList)
+		db.Save(&huntList)
 
-		json.NewEncoder(w).Encode(&huntList.ID)
+		json.NewEncoder(w).Encode(huntList.ID)
 	default:
 		http.Error(w, http.StatusText(405), 405)
 	}
