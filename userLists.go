@@ -107,5 +107,16 @@ func updateUserList(w http.ResponseWriter, r *http.Request) {
 	})
 
 	json.NewEncoder(w).Encode(&userList)
+}
 
+// deleteUserList removes a user by id
+func deleteUserList(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
+	vars := mux.Vars(r)
+	key := vars["id"]
+	var userList UserList
+
+	db.Table("user_lists").Find(&userList, key)
+
+	db.Delete(&userList)
 }
