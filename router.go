@@ -33,7 +33,7 @@ func handleRequest() {
 	router.HandleFunc("/user-lists/{id}", getUserList).Methods("GET")
 	router.HandleFunc("/user-lists/{userid}/{huntlistid}", getSpecificList).Methods("GET")
 	router.HandleFunc("/create-user-list", newUserList).Methods("POST", "OPTIONS")
-	router.HandleFunc("/update-user-list", updateUserList).Methods("PUT")
+	router.HandleFunc("/update-user-list/{id}", updateUserList).Methods("PUT")
 	//selected_items
 	router.HandleFunc("/selected-items", allSelectedItems).Methods("GET")
 	router.HandleFunc("/selected-items/{id}", getSelectedItem).Methods("GET")
