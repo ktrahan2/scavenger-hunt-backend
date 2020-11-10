@@ -119,4 +119,7 @@ func deleteUserList(w http.ResponseWriter, r *http.Request) {
 	db.Find(&userList, key)
 
 	db.Delete(&userList)
+
+	json.NewEncoder(w).Encode("User List Deleted")
+
 }
