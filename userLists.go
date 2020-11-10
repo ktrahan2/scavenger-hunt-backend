@@ -116,7 +116,7 @@ func deleteUserList(w http.ResponseWriter, r *http.Request) {
 	key := vars["id"]
 	var userList UserList
 
-	db.Table("user_lists").Find(&userList, key)
+	db.Find(&userList, key)
 
 	db.Delete(&userList)
 }
