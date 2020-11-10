@@ -43,7 +43,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 		json.Unmarshal(reqBody, &receivedUser)
 
-		db.Preload("HuntList.HuntItems").Where("username = ?", receivedUser.Username).Find(&foundUser)
+		db.Preload("HuntLists.HuntItems").Where("username = ?", receivedUser.Username).Find(&foundUser)
 
 		err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(receivedUser.Password))
 
