@@ -15,8 +15,8 @@ import (
 
 //JWTTOKEN is the structure of a Token
 type JWTTOKEN struct {
-	Token string `json:"token"`
-	ID    uint   `json:"id"`
+	Token     string `json:"token"`
+	FoundUser User   `json:"user"`
 }
 
 //Claims is the structure of the claims from a token
@@ -27,18 +27,26 @@ type Claims struct {
 
 //Allows a user to login and receive a JWT token
 func login(w http.ResponseWriter, r *http.Request) {
+
 	setupResponse(&w, r)
+
 	switch r.Method {
 	case "OPTIONS":
 		w.WriteHeader(http.StatusOK)
 		return
 	case "POST":
+
 		var receivedUser User
 		var foundUser User
+
 		reqBody, _ := ioutil.ReadAll(r.Body)
+
 		json.Unmarshal(reqBody, &receivedUser)
-		db.Where("username = ?", receivedUser.Username).First(&foundUser)
+
+		db.Where("username = ?", receivedUser.Username).Preload("HuntList.HuntItems").First(&foundUser)
+
 		err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(receivedUser.Password))
+
 		if err != nil {
 			json.NewEncoder(w).Encode("Unathorized User Information")
 		} else {
@@ -49,7 +57,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 			}
 			Response := JWTTOKEN{
 				validToken,
-				foundUser.ID,
+				foundUser,
 			}
 			json.NewEncoder(w).Encode(Response)
 		}

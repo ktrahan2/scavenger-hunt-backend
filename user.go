@@ -79,7 +79,7 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 
 		Response := JWTTOKEN{
 			validToken,
-			user.ID,
+			user,
 		}
 		json.NewEncoder(w).Encode(Response)
 	default:
