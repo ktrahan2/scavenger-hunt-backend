@@ -111,13 +111,21 @@ func updateUserList(w http.ResponseWriter, r *http.Request) {
 
 // deleteUserList removes a user by id
 func deleteUserList(w http.ResponseWriter, r *http.Request) {
+
 	setupResponse(&w, r)
+
 	vars := mux.Vars(r)
 	key := vars["id"]
+
 	var userList UserList
+	var huntList HuntList
+	var user User
 
-	db.Preload("HuntLists.HuntItems").Find(&userList, key)
+	db.Find(&userList, key)
+	db.Find(&user, userList.UserID)
+	db.Find(&huntList, userList.HuntListID)
 
+	db.Model(&huntList).Association("Users").Delete(&user)
 	db.Delete(&userList)
 
 	json.NewEncoder(w).Encode("User List Deleted")

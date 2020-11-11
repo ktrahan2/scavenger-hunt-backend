@@ -52,6 +52,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 
 //NewUser creates a new user
 func newUser(w http.ResponseWriter, r *http.Request) {
+
 	setupResponse(&w, r)
 
 	switch r.Method {
@@ -59,9 +60,13 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	case "POST":
+
 		reqBody, _ := ioutil.ReadAll(r.Body)
+
 		var user User
+
 		json.Unmarshal(reqBody, &user)
+
 		hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 		user = User{
 			Username: user.Username,
@@ -70,6 +75,8 @@ func newUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		db.Create(&user)
+
+		db.Preload("HuntLists.HuntItems").First(&user)
 
 		validToken, err := generateJWT()
 
