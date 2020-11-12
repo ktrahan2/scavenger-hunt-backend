@@ -3,14 +3,14 @@
 Scavenger Hunt API helps the react native application, On The Hunt, communicate with the database. 
 
 # Table Of Contents 
-- [Description](https://github.com/ktrahan2/spacey-bois-backend/tree/main#description)
-- [Example Code](https://github.com/ktrahan2/spacey-bois-backend/tree/main#example-code)
-- [Technology Used](https://github.com/ktrahan2/spacey-bois-backend/tree/main#technology-used)
+- [Description](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#description)
+- [Example Code](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#example-code)
+- [Technology Used](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#technology-used)
 - [Setting up for the Application](https://github.com/ktrahan2/spacey-bois-backend/tree/main#setting-up-for-the-application)
-- [Main Features](https://github.com/ktrahan2/spacey-bois-backend/tree/main#main-features)
-- [Features in Progress](https://github.com/ktrahan2/spacey-bois-backend/tree/main#features-in-progress)
-- [Contact Information](https://github.com/ktrahan2/spacey-bois-backend/tree/main#contact-information)
-- [Link to Frontend Repo](https://github.com/ktrahan2/spacey-bois-backend/tree/main#link-to-frontend-repo)
+- [Main Features](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#main-features)
+- [Features in Progress](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#features-in-progress)
+- [Contact Information](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#contact-information)
+- [Link to Frontend Repo](https://github.com/ktrahan2/scavenger-hunt-backend/tree/main#link-to-frontend-repo)
 
 ## Description
 
