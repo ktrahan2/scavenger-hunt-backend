@@ -88,7 +88,7 @@ This function generates a JWT token to be sent to a user after that successfully
 
 - Full CRUD actions created for data manipulation
 - Router built with mux
-- Auth with bcrypt and JWT toke
+- Auth with bcrypt and JWT token
 
 ## Features in Progress
 
